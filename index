@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Beings | Professional Web Design</title>
+    <style>
+        /* === BASE STYLES & VARIABLES === */
+        :root {
+            --red-primary: #e63946;
+            --red-glow: #ff4d4d;
+            --dark-bg: #0f0f0f;
+            --text-light: #f1faee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* === HERO SECTION & FACE ANIMATIONS === */
+        .hero-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a1a 0%, var(--dark-bg) 100%);
+        }
+
+        .faces-container {
+            display: flex;
+            height: 60vh;
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .face {
+            width: 50%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0;
+            /* Slide in animation settings */
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .face-left {
+            /* Using placeholder image 1 */
+            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop');
+            background-position: right center;
+            transform: translateX(-150px) scale(0.9);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .face-right {
+            /* Using placeholder image 2 */
+            background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop');
+            background-position: left center;
+            transform: translateX(150px) scale(0.9);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Triggered via JS on load */
+        .faces-container.meet .face {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        /* === CONTENT LAYER === */
+        .content-layer {
+            margin-top: 100vh; /* Pushes content below the fixed hero */
+            position: relative;
+            z-index: 1;
+        }
+
+        .negative-space {
+            height: 50vh; /* Space to watch the faces split */
+            background: transparent;
+        }
+
+        .content-body {
+            background-color: var(--dark-bg);
+            padding: 5rem 2rem;
+            min-height: 100vh;
+            border-top: 2px solid var(--red-primary);
+            box-shadow: 0 -20px 50px rgba(230, 57, 70, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* === REACTIVE ANIMATIONS (ON/OFF) === */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .reveal-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            color: var(--red-primary);
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.4);
+        }
+
+        p.lead {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* === SHIMMERING ACCENT BORDERS === */
+        .shimmer-card {
+            position: relative;
+            background: #1a1a1a;
+            padding: 3rem;
+            margin: 4rem 0;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .shimmer-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(60deg, var(--red-primary), var(--dark-bg), var(--red-glow), var(--dark-bg), var(--red-primary));
+            background-size: 300% 300%;
+            z-index: -1;
+            border-radius: 10px;
+            animation: shimmerEffect 4s linear infinite;
+        }
+
+        @keyframes shimmerEffect {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* === CTA BUTTON WITH SHEEN === */
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background-color: var(--red-primary);
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--red-glow);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.6);
+        }
+
+        /* The Sheen Effect */
+        .cta-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: sheenPulse 3s infinite;
+        }
+
+        @keyframes sheenPulse {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .faces-container { height: 40vh; }
+            .shimmer-card { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-fixed">
+        <div class="faces-container" id="face-container">
+            <div class="face face-left" id="leftFace"></div>
+            <div class="face face-right" id="rightFace"></div>
+        </div>
+    </div>
+
+    <div class="content-layer">
+        <div class="negative-space"></div>
+        
+        <div class="content-body">
+            <div class="container">
+                
+                <h1 class="reveal-item">Crafted by <span class="highlight">Human Beings</span>.</h1>
+                
+                <p class="lead reveal-item">
+                    We are real people. A diverse, disability-friendly collective of passionate creators who dutifully apply themselves to the art of digital design.
+                </p>
+
+                <div class="shimmer-card reveal-item">
+                    <h2 style="margin-bottom: 1rem;">Uncompromising Professionalism</h2>
+                    <p style="margin-bottom: 2rem; line-height: 1.6;">
+                        In an era of automation, we believe in the unmatched power of human intuition, raw passion, and meticulous attention to detail. Every pixel, every interaction, and every line of code is debated, refined, and perfected by dedicated human minds.
+                    </p>
+                    <a href="#contact" class="cta-btn">Start Your Project</a>
+                </div>
+
+                <div class="reveal-item" style="margin-top: 6rem;">
+                    <h2>Our Dutiful Approach</h2>
+                    <p style="max-width: 600px; margin-top: 1rem; line-height: 1.6; color: #ccc;">
+                        We champion diversity because different perspectives create better designs. Our workspace and workflow are entirely accessible, proving that world-class professionalism isn't about fitting a mold—it's about the relentless pursuit of excellence.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Initial Load Animation for Faces
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('face-container').classList.add('meet');
+            }, 300); // Slight delay for dramatic effect
+        });
+
+        // 2. Parallax Scroll Effect for Face Splitting
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const leftFace = document.getElementById('leftFace');
+            const rightFace = document.getElementById('rightFace');
+
+            // Once the faces have met, we move them vertically in opposite directions based on scroll
+            // The multiplier (0.6) controls the speed of the separation
+            leftFace.style.transform = `translateY(-${scrollY * 0.6}px)`;
+            rightFace.style.transform = `translateY(${scrollY * 0.6}px)`;
+        });
+
+        // 3. Reactive On/Off Animations for Content (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Triggers when 15% of the element is in view
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Turn ON animation when scrolling into view
+                    entry.target.classList.add('is-visible');
+                } else {
+                    // Turn OFF animation when scrolling out of view 
+                    // (allows the animation to play again when scrolling back)
+                    entry.target.classList.remove('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-item').forEach((item) => {
+            revealObserver.observe(item);
+        });
+    </script>
+</body>
+</html>
